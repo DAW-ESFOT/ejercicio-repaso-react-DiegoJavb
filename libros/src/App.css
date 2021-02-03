@@ -1,0 +1,11 @@
+@import '~antd/dist/antd.css';
+.ant-layout-content-header {
+  background-color: lightblue;
+}
+.ant-avatar {
+  overflow: visible;
+  height: 50px;
+}
+.ant-card {
+  border-color: lightslategrey;
+}
