@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, PageHeader, Card, Col, Row, Avatar, Modal, Image } from 'antd';
+import { Layout, PageHeader, Card, Col, Row, Avatar, Modal, Descriptions,Image } from 'antd';
 import '../App.css';
-import Button, { convertLegacyProps } from 'antd/lib/button/button';
+import Button from 'antd/lib/button/button';
 const { Header, Footer, Content } = Layout;
 const { Meta } = Card;
 
 function App() {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [idBook,setIdBook] = useState(null)
 
   const [books, setBooks] = useState([]);
-  useEffect(() => {
+  useEffect (() => {
     const getBooks = async () => {
       const data = await fetch(
         'https://stark-spire-22280.herokuapp.com/api/books'
@@ -22,9 +23,22 @@ function App() {
     getBooks();
   }, []);
 
-  const handleShowModal = () => {
-    setIsModalVisible(true);
-  };
+  const [bookDetails, setBookDetails]=useState({});
+  useEffect (()=>{
+    const getBookDetails =async()=>{
+      if(idBook){
+        const data = await fetch(
+          `https://stark-spire-22280.herokuapp.com/api/books/${idBook}`
+        );
+        const json = await data.json();
+        console.log('json',json)
+        setBookDetails(json);
+        setIsModalVisible(true);
+      }
+    };
+    getBookDetails();
+  },[idBook]);
+  
   const handleOk = () => {
     setIsModalVisible(false);
   };
@@ -39,44 +53,66 @@ function App() {
         <Header className='ant-layout-content-header'>
           <PageHeader className='site-page-header' title='Libros' />
         </Header>
-        <Content>
+        <Content className='background'>
           <h1>Libros disponibles</h1>
           <div className='site-card-wrapper'>
             <Row gutter={16}>
               <Col span={8}>
-                {books.map((book) => {
+                {books.map((book,index) => {
                   return (
                     <Card
                       key={book.id}
                       style={{ width: 400 }}
                       actions={[
-                        <Button onClick={() => handleShowModal()}>
+                        <Button onClick={() => setIdBook(book.id)}>
                           Ver mas
                         </Button>,
-                      ]}>
+                      ]}
+                      bordered={false}>
                       <Meta
                         avatar={<Avatar src={book.cover_page} />}
                         title={book.title}
-                        description={[book.author + '\n' + book.year_edition]}
+                        description={[book.author + ' ' + book.year_edition]}
                       />
                     </Card>
                   );
                 })}
-              </Col>
-            </Row>
+</Col>
+</Row>        
           </div>
         </Content>
         <Footer>Footer</Footer>
       </Layout>
       <Modal
-        title='Detalles del libro'
+        class='modal-detalles'
         visible={isModalVisible}
         onOk={handleOk}
-        onCancel={handleCancel}>
-        <Row>
-          <Col>diego</Col>
-          <Col>bacuy</Col>
-        </Row>
+        onCancel={handleCancel}
+        Footer={null}
+        >
+          <Descriptions title='Detalles del libro' style={{textAlign:'center'}}>
+            <Row>
+              <Col style={{textAlign:'left'}}>
+                <Descriptions.Item >{bookDetails.title}</Descriptions.Item><br/>
+                <Descriptions.Item >{bookDetails.author}</Descriptions.Item><br/>
+                <Descriptions.Item >{bookDetails.year_edition}</Descriptions.Item><br/>
+                <Descriptions.Item >{bookDetails.price}</Descriptions.Item><br/>
+                <Descriptions.Item >{bookDetails.synopsis}</Descriptions.Item><br/>
+                <Descriptions.Item >
+                  {
+                    bookDetails.available?'Disponible':'Agotado'
+                  }
+                </Descriptions.Item><br/>
+              </Col>
+              <Col>
+                <Row>
+                  <Col><Image src={bookDetails.cover_page}></Image></Col>
+                  <Col><Image src={bookDetails.back_cover}></Image></Col>
+                </Row>
+              </Col>
+            </Row>
+        </Descriptions>
+        
       </Modal>
     </>
   );

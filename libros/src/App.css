@@ -1,4 +1,8 @@
 @import '~antd/dist/antd.css';
+
+.background{
+  background-image: url('./images/09_fondo_port_izq.jpg');
+}
 .ant-layout-content-header {
   background-color: lightblue;
 }
@@ -8,4 +12,14 @@
 }
 .ant-card {
   border-color: lightslategrey;
+}
+.ant-modal-content{
+  width: 600px;
+}
+.ant-col{
+  width:50%;
+}
+.ant-image{
+  width: 100px;
+  height: 130px;
 }
