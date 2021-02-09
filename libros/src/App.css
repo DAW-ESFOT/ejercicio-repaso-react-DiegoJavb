@@ -10,14 +10,18 @@
   overflow: visible;
   height: 50px;
 }
-.ant-card {
-  border-color: lightslategrey;
+.border-details{
+  padding: 30px;
+}
+.ant-card{
+  margin: 0,15px;
 }
 .ant-modal-content{
   width: 600px;
 }
-.ant-col{
-  width:50%;
+.modal-col{
+  width: 250px;
+  text-align: left;
 }
 .ant-image{
   width: 100px;

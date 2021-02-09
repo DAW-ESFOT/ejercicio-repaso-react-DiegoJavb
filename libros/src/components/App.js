@@ -50,35 +50,46 @@ function App() {
   return (
     <>
       <Layout>
-        <Header className='ant-layout-content-header'>
-          <PageHeader className='site-page-header' title='Libros' />
-        </Header>
+        
+          <PageHeader title='Libros' />
+        
         <Content className='background'>
-          <h1>Libros disponibles</h1>
-          <div className='site-card-wrapper'>
-            <Row gutter={16}>
-              <Col span={8}>
+          <div style={{display:'flex'}}>
+            <Row gutter={15} style={{display:'flex'}}>
                 {books.map((book,index) => {
                   return (
                     <Card
                       key={book.id}
-                      style={{ width: 400 }}
-                      actions={[
-                        <Button onClick={() => setIdBook(book.id)}>
-                          Ver mas
-                        </Button>,
-                      ]}
-                      bordered={false}>
-                      <Meta
-                        avatar={<Avatar src={book.cover_page} />}
-                        title={book.title}
-                        description={[book.author + ' ' + book.year_edition]}
-                      />
+                      style={{ width: 400,display:'block' }}
+                      bordered={false}
+                      >
+                      
+                        <div style={{display:'flex'}}> 
+                        <Row  gutter={15} justify="center">
+                          <Col className='gutter-row'>
+                          <div className="border-details">
+                            <img
+                              alt={book.title}
+                              src={book.cover_page}
+                             style={{ width: 100, height: 150  }}/>
+                            </div>
+                          </Col>
+                        </Row>
+                        <Col>
+                          <div>
+                            <h2 style={{fontWeight: 'light'}}>{book.title}</h2>
+                            <h3>{book.author} </h3>
+                            <h3> {book.year_edition}</h3>
+                            <h3>${book.price}</h3>
+                            <Button className='botonSee' onClick={() => setIdBook(book.id)}>Ver mas...</Button>
+                          </div>
+                        </Col>
+                      </div> 
                     </Card>
                   );
                 })}
-</Col>
-</Row>        
+             
+            </Row>       
           </div>
         </Content>
         <Footer>Footer</Footer>
@@ -92,7 +103,7 @@ function App() {
         >
           <Descriptions title='Detalles del libro' style={{textAlign:'center'}}>
             <Row>
-              <Col style={{textAlign:'left'}}>
+              <Col className='modal-col' >
                 <Descriptions.Item >{bookDetails.title}</Descriptions.Item><br/>
                 <Descriptions.Item >{bookDetails.author}</Descriptions.Item><br/>
                 <Descriptions.Item >{bookDetails.year_edition}</Descriptions.Item><br/>
@@ -104,10 +115,11 @@ function App() {
                   }
                 </Descriptions.Item><br/>
               </Col>
-              <Col>
-                <Row>
-                  <Col><Image src={bookDetails.cover_page}></Image></Col>
-                  <Col><Image src={bookDetails.back_cover}></Image></Col>
+              <Col className='modal-col'>
+                <Row style={{display:'flex'}}>
+                  <Col className='image_detail'><Image src={bookDetails.cover_page}></Image></Col>
+                  <Col style={{width:15}}></Col>
+                  <Col className='image_detail'><Image src={bookDetails.back_cover}></Image></Col>
                 </Row>
               </Col>
             </Row>
